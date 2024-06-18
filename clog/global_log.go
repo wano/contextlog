@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/rs/zerolog"
-	"os"
 )
 
 var (
@@ -31,7 +30,9 @@ func SetGlobalLevel(level zerolog.Level) {
 }
 
 func newGlobalLogger() ContextLogger {
-	l := zerolog.New(os.Stdout).With().CallerWithSkipFrameCount(4).Logger()
+	out := NewCustomConsoleWriter()
+
+	l := zerolog.New(out).With().CallerWithSkipFrameCount(4).Logger()
 	impl := implContextLogger{
 		logger: l,
 	}

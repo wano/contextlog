@@ -9,9 +9,9 @@ import (
 
 func NewContextLogger() ContextLogger {
 
-	out2 := NewCustomConsoleWriter()
+	out := NewCustomConsoleWriter()
 
-	l := zerolog.New(out2).
+	l := zerolog.New(out).
 		With().
 		CallerWithSkipFrameCount(3).
 		Logger().
