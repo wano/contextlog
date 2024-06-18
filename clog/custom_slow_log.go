@@ -48,7 +48,7 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 	// Create a custom log structure with the specific order
 	logStructure := CustomLogStructure{
 		Level:     fmt.Sprint(evt["level"]),
-		Message:   fmt.Sprint(evt["msg"]),
+		Message:   fmt.Sprint(evt["message"]),
 		Meta:      prefix,
 		Timestamp: time.Now().Format(time.RFC3339),
 		Caller:    caller,
