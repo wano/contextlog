@@ -35,7 +35,7 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 	}
 
 	var caller string
-	if _, file, line, ok := runtime.Caller(8); ok {
+	if _, file, line, ok := runtime.Caller(7); ok {
 		caller = fmt.Sprintf("%s:%d", file, line)
 	}
 
