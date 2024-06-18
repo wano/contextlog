@@ -1,9 +1,9 @@
 package test
 
 import (
-	"github.com/wano/contextlog/clog"
 	"context"
 	"github.com/rs/zerolog"
+	"github.com/wano/contextlog/clog"
 	"testing"
 )
 

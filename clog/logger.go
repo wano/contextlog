@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/rs/zerolog"
-	"os"
 	"strings"
 )
 
 func NewContextLogger() ContextLogger {
 
-	l := zerolog.New(os.Stdout).
+	out2 := NewCustomConsoleWriter()
+
+	l := zerolog.New(out2).
 		With().
 		CallerWithSkipFrameCount(3).
 		Logger().
@@ -49,10 +50,18 @@ func (this *implContextLogger) Panicj(j JSON) {
 
 type implContextLogger struct {
 	logger zerolog.Logger
+	prefix map[string]interface{}
 }
 
 func (this *implContextLogger) SetPrefix(key string, val interface{}) {
-	this.logger = this.logger.With().Str(key, fmt.Sprint(val)).Logger()
+
+	if this.prefix == nil {
+		this.prefix = map[string]interface{}{}
+	}
+	this.prefix[key] = val
+
+	this.logger = this.logger.With().Any(`prefix`, this.prefix).Logger()
+
 }
 
 func ifc(i ...interface{}) string {

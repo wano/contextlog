@@ -27,4 +27,3 @@ type ContextLogger interface {
 type (
 	JSON = map[string]interface{}
 )
-

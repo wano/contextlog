@@ -2,7 +2,7 @@
 
 [github.com/labstack/gommon/log](https://github.com/labstack/gommon/tree/master/log) の interface を用いた [zerolog](https://github.com/rs/zerolog) のラッパー。
 
-## なぜ実装がzelologなのか?
+## zelolog
 * github.com/labstack/gommon/log　は カスタマイズ性に乏しい
 * 開発が止まっている
 * スレッドロック等、zap以降のロガーをつかっていた方が[良さげ](https://zenn.dev/moriyoshi/articles/1af0659e29d727)
