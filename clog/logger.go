@@ -9,11 +9,11 @@ import (
 
 func NewContextLogger() ContextLogger {
 
-	out := NewCustomConsoleWriter()
+	out := NewCustomConsoleWriter(6)
 
 	l := zerolog.New(out).
 		With().
-		CallerWithSkipFrameCount(3).
+		//CallerWithSkipFrameCount(3).
 		Logger().
 		Level(globalLevel)
 

@@ -3,8 +3,6 @@ package clog
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"io"
 	"os"
 	"runtime"
@@ -12,12 +10,14 @@ import (
 )
 
 type CustomConsoleWriter struct {
-	Out io.Writer
+	Out      io.Writer
+	CallSkip int
 }
 
-func NewCustomConsoleWriter(options ...func(w *CustomConsoleWriter)) CustomConsoleWriter {
+func NewCustomConsoleWriter(callSkip int, options ...func(w *CustomConsoleWriter)) CustomConsoleWriter {
 	w := CustomConsoleWriter{
-		Out: os.Stdout,
+		Out:      os.Stdout,
+		CallSkip: callSkip,
 	}
 
 	for _, opt := range options {
@@ -35,7 +35,7 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 	}
 
 	var caller string
-	if _, file, line, ok := runtime.Caller(7); ok {
+	if _, file, line, ok := runtime.Caller(w.CallSkip); ok {
 		caller = fmt.Sprintf("%s:%d", file, line)
 	}
 
@@ -63,19 +63,6 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 	w.Out.Write(output)
 	w.Out.Write([]byte("\n"))
 	return len(p), nil
-}
-
-func main() {
-	// CustomConsoleWriterを設定
-	out := NewCustomConsoleWriter()
-
-	log.Logger = zerolog.New(out).With().Timestamp().Logger()
-
-	// ログの出力
-	log.Info().
-		Str("app_name", "app_server").
-		Str("context_id", "random_value").
-		Msg("message !!")
 }
 
 // CustomLogStructure defines the log structure with specific field order
