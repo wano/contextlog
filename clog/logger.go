@@ -104,6 +104,16 @@ func (this *implContextLogger) Errorf(format string, args ...interface{}) {
 	this.logger.Error().Msgf(format, args...)
 }
 
+func (this *implContextLogger) ErrorStack(err error) {
+	if err == nil {
+		return
+	}
+	strs := err.Error()
+	splitten := strings.Split(strs, "\n")
+	this.logger.Error().Msg(ifc(splitten))
+
+}
+
 func (this *implContextLogger) Fatal(i ...interface{}) {
 	this.logger.Fatal().Msg(ifc(i...))
 }

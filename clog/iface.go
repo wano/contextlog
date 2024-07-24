@@ -15,6 +15,7 @@ type ContextLogger interface {
 	Error(i ...interface{})
 	Errorf(format string, args ...interface{})
 	Errorj(j JSON)
+	ErrorStack(e error)
 	Fatal(i ...interface{})
 	Fatalf(format string, args ...interface{})
 	Fatalj(j JSON)
