@@ -124,11 +124,3 @@ func (this *implContextLogger) WithContext(oldContext context.Context) (newConte
 	newContext = context.WithValue(oldContext, LOGGING_CONTECT_KEY, this)
 	return newContext
 }
-
-type ErrorArray []string
-
-func (uu ErrorArray) MarshalZerologArray(a *zerolog.Array) {
-	for _, u := range uu {
-		a.Str(u)
-	}
-}

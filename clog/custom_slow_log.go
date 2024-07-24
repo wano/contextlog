@@ -53,7 +53,7 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 		plain := []string{}
 		lines := strings.Split(v, "\n")
 		for _, line := range lines {
-			plain = append(plain, strings.TrimSpace(line))
+			plain = append(plain, line)
 		}
 		messageDetail = plain
 	}
