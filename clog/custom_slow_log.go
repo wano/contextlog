@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -45,10 +46,22 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 		prefix = ev.(map[string]interface{})
 	}
 
+	var messageDetail interface{} = nil
+	v := fmt.Sprint(evt["message"])
+	verr := json.Unmarshal([]byte(v), &messageDetail)
+	if verr != nil {
+		plain := []string{}
+		lines := strings.Split(v, "\n")
+		for _, line := range lines {
+			plain = append(plain, strings.TrimSpace(line))
+		}
+		messageDetail = plain
+	}
+
 	// Create a custom log structure with the specific order
 	logStructure := CustomLogStructure{
 		Level:     fmt.Sprint(evt["level"]),
-		Message:   evt["message"],
+		Message:   messageDetail,
 		Meta:      prefix,
 		Timestamp: time.Now().Format(time.RFC3339),
 		Caller:    caller,
@@ -68,7 +81,7 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 // CustomLogStructure defines the log structure with specific field order
 type CustomLogStructure struct {
 	Level     string                 `json:"level"`
-	Message   any                    `json:"msg"`
+	Message   interface{}            `json:"msg"`
 	Meta      map[string]interface{} `json:"meta,omitempty"`
 	Timestamp string                 `json:"timestamp"`
 	Caller    string                 `json:"caller"`

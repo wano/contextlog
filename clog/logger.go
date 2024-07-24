@@ -104,16 +104,6 @@ func (this *implContextLogger) Errorf(format string, args ...interface{}) {
 	this.logger.Error().Msgf(format, args...)
 }
 
-func (this *implContextLogger) ErrorStack(err error) {
-	if err == nil {
-		return
-	}
-	strs := err.Error()
-	splitten := strings.Split(strs, "\n")
-	this.logger.Error().Msg(ifc(splitten))
-
-}
-
 func (this *implContextLogger) Fatal(i ...interface{}) {
 	this.logger.Fatal().Msg(ifc(i...))
 }
@@ -133,4 +123,12 @@ func (this *implContextLogger) Panicf(format string, args ...interface{}) {
 func (this *implContextLogger) WithContext(oldContext context.Context) (newContext context.Context) {
 	newContext = context.WithValue(oldContext, LOGGING_CONTECT_KEY, this)
 	return newContext
+}
+
+type ErrorArray []string
+
+func (uu ErrorArray) MarshalZerologArray(a *zerolog.Array) {
+	for _, u := range uu {
+		a.Str(u)
+	}
 }
