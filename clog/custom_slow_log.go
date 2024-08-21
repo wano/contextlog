@@ -58,12 +58,15 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 		messageDetail = plain
 	}
 
+	now := time.Now()
+	logtime := now.Format("2006-01-02T15:04:05.000Z07:00")
+
 	// Create a custom log structure with the specific order
 	logStructure := CustomLogStructure{
 		Level:     fmt.Sprint(evt["level"]),
 		Message:   messageDetail,
 		Meta:      prefix,
-		Timestamp: time.Now().Format(time.RFC3339),
+		Timestamp: logtime,
 		Caller:    caller,
 	}
 
