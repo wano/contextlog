@@ -36,8 +36,25 @@ func (w CustomConsoleWriter) Write(p []byte) (n int, err error) {
 	}
 
 	var caller string
-	if _, file, line, ok := runtime.Caller(w.CallSkip); ok {
-		caller = fmt.Sprintf("%s:%d", file, line)
+	// スタックトレースを取得し、適切な呼び出し元を見つける
+	for i := w.CallSkip; i < w.CallSkip+15; i++ {
+		if _, file, line, ok := runtime.Caller(i); ok {
+			// zerologパッケージやcontextlogパッケージからの呼び出しはスキップ
+			if !strings.Contains(file, "github.com/rs/zerolog") &&
+			   !strings.Contains(file, "github.com/wano/contextlog") {
+				caller = fmt.Sprintf("%s:%d", file, line)
+				break
+			}
+		} else {
+			break
+		}
+	}
+	
+	// 呼び出し元が見つからない場合はデフォルトの動作
+	if caller == "" {
+		if _, file, line, ok := runtime.Caller(w.CallSkip); ok {
+			caller = fmt.Sprintf("%s:%d", file, line)
+		}
 	}
 
 	var prefix map[string]interface{} = nil
