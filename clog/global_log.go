@@ -30,9 +30,9 @@ func SetGlobalLevel(level zerolog.Level) {
 }
 
 func newGlobalLogger() ContextLogger {
-	out := NewCustomConsoleWriter(7)
+	out := NewCustomConsoleWriter(3)
 
-	l := zerolog.New(out).With().CallerWithSkipFrameCount(4).Logger()
+	l := zerolog.New(out).With().CallerWithSkipFrameCount(8).Logger()
 	impl := implContextLogger{
 		logger: l,
 	}
