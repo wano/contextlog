@@ -13,7 +13,7 @@ func NewContextLogger() ContextLogger {
 
 	l := zerolog.New(out).
 		With().
-		//CallerWithSkipFrameCount(3).
+		CallerWithSkipFrameCount(3).
 		Logger().
 		Level(globalLevel)
 
