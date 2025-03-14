@@ -49,7 +49,7 @@ func TestClone(t *testing.T) {
 	ctx = originalLogger.WithContext(ctx)
 	
 	// Clone メソッドを使用して新しいコンテキストとロガーを取得
-	newCtx, newLogger := Ctx(ctx).Clone(ctx)
+	newCtx, newLogger := Clone(ctx)
 	
 	// 新しいロガーにプレフィックスを設定
 	newLogger.SetPrefix("new", "value")
