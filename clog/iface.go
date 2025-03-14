@@ -23,6 +23,7 @@ type ContextLogger interface {
 	Panicj(j JSON)
 	SetPrefix(s string, val interface{})
 	WithContext(oldContext context.Context) (newContext context.Context)
+	Clone(ctx context.Context) (newContext context.Context, newLogger ContextLogger)
 }
 type (
 	JSON = map[string]interface{}

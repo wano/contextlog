@@ -125,3 +125,24 @@ func (this *implContextLogger) WithContext(oldContext context.Context) (newConte
 	newContext = context.WithValue(oldContext, LOGGING_CONTECT_KEY, this)
 	return newContext
 }
+
+func (this *implContextLogger) Clone(ctx context.Context) (newContext context.Context, newLogger ContextLogger) {
+	// ロガーのコピーを作成
+	newImpl := &implContextLogger{
+		logger: this.logger,
+	}
+	
+	// prefixがある場合はコピー
+	if this.prefix != nil {
+		newImpl.prefix = make(map[string]interface{})
+		for k, v := range this.prefix {
+			newImpl.prefix[k] = v
+		}
+	}
+	
+	// 元のコンテキストをベースに新しいコンテキストを作成
+	newContext = context.WithValue(ctx, LOGGING_CONTECT_KEY, newImpl)
+	newLogger = newImpl
+	
+	return newContext, newLogger
+}
