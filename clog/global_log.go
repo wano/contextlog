@@ -133,6 +133,41 @@ func Ctx(ctx context.Context) ContextLogger {
 
 }
 
+// Clone はコンテキストからロガーを取得し、そのコピーを作成して新しいコンテキストとロガーを返します。
+func Clone(ctx context.Context) (newContext context.Context, newLogger ContextLogger) {
+	// コンテキストからロガーを取得
+	logger, ok := ctx.Value(LOGGING_CONTECT_KEY).(*implContextLogger)
+	if !ok {
+		global.Warn(`contextにlogインスタンスがありません`)
+		// グローバルロガーのコピーを作成
+		newImpl := &implContextLogger{
+			logger: global.(*implContextLogger).logger,
+		}
+		newContext = context.WithValue(ctx, LOGGING_CONTECT_KEY, newImpl)
+		newLogger = newImpl
+		return newContext, newLogger
+	}
+
+	// ロガーのコピーを作成
+	newImpl := &implContextLogger{
+		logger: logger.logger,
+	}
+	
+	// prefixがある場合はコピー
+	if logger.prefix != nil {
+		newImpl.prefix = make(map[string]interface{})
+		for k, v := range logger.prefix {
+			newImpl.prefix[k] = v
+		}
+	}
+	
+	// 元のコンテキストをベースに新しいコンテキストを作成
+	newContext = context.WithValue(ctx, LOGGING_CONTECT_KEY, newImpl)
+	newLogger = newImpl
+	
+	return newContext, newLogger
+}
+
 const LOGGING_CONTECT_KEY = `__contextLog__`
 
 func toJson(j JSON) string {

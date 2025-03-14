@@ -125,3 +125,4 @@ func (this *implContextLogger) WithContext(oldContext context.Context) (newConte
 	newContext = context.WithValue(oldContext, LOGGING_CONTECT_KEY, this)
 	return newContext
 }
+
