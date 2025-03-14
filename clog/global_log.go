@@ -31,7 +31,7 @@ func SetGlobalLevel(level zerolog.Level) {
 }
 func newGlobalLogger() ContextLogger {
 	// グローバルロガーの場合、呼び出し元を正しく表示するために適切なCallSkip値を設定
-	out := NewCustomConsoleWriter(2)
+	out := NewCustomConsoleWriter(10)
 
 	// CallerWithSkipFrameCountは使用せず、CustomConsoleWriterのCallSkipのみで制御
 	l := zerolog.New(out).With().Logger()
