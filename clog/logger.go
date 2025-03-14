@@ -3,17 +3,18 @@ package clog
 import (
 	"context"
 	"fmt"
-	"github.com/rs/zerolog"
 	"strings"
+
+	"github.com/rs/zerolog"
 )
 
 func NewContextLogger() ContextLogger {
-
+	// コンテキストロガーの場合、呼び出し元を正しく表示するために適切なCallSkip値を設定
 	out := NewCustomConsoleWriter(6)
 
+	// CallerWithSkipFrameCountは使用せず、CustomConsoleWriterのCallSkipのみで制御
 	l := zerolog.New(out).
 		With().
-		CallerWithSkipFrameCount(3).
 		Logger().
 		Level(globalLevel)
 

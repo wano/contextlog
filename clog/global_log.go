@@ -3,6 +3,7 @@ package clog
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/rs/zerolog"
 )
 
@@ -28,11 +29,12 @@ func SetGlobalLevel(level zerolog.Level) {
 	globalLevel = level
 	zerolog.SetGlobalLevel(level)
 }
-
 func newGlobalLogger() ContextLogger {
-	out := NewCustomConsoleWriter(3)
+	// グローバルロガーの場合、呼び出し元を正しく表示するために適切なCallSkip値を設定
+	out := NewCustomConsoleWriter(2)
 
-	l := zerolog.New(out).With().CallerWithSkipFrameCount(8).Logger()
+	// CallerWithSkipFrameCountは使用せず、CustomConsoleWriterのCallSkipのみで制御
+	l := zerolog.New(out).With().Logger()
 	impl := implContextLogger{
 		logger: l,
 	}
